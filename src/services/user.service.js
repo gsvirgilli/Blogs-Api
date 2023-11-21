@@ -22,6 +22,15 @@ const userService = async (displayName, email, password) => {
   return { status: 201, data: { token } };
 };
 
+const getAllUsers = async () => {
+  const result = await User.findAll({
+    attributes: { exclude: ['password'] },
+  });
+
+  return { status: 200, data: result };
+};
+
 module.exports = {
   userService,
+  getAllUsers,
 };

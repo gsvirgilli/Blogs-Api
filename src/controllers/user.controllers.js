@@ -6,6 +6,12 @@ const userController = async (req, res) => {
   return res.status(result.status).json(result.data);
 };
 
+const getAllUsers = async (req, res) => {
+  const { status, data } = await userService.getAllUsers();
+  return res.status(status).json(data);
+};
+
 module.exports = {
   userController,
+  getAllUsers,
 };
