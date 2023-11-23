@@ -8,6 +8,12 @@ const createController = async (req, res) => {
   res.status(postNew.status).json(postNew.data);
 };
 
+const getAllController = async (req, res) => {
+  const allPost = await service.getAll();
+  res.status(allPost.status).json(allPost.data);
+};
+
 module.exports = {
   createController,
+  getAllController,
 };

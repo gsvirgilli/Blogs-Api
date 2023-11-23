@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     userId: {
-      field: 'user_id',
       type: DataTypes.INTEGER,
       allowNull: false
     },
@@ -28,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
     },
   }, {
-    tableName: 'BlogPost',
+    tableName: 'blog_posts',
     timestamps: false,
     underscored: true,
   });
