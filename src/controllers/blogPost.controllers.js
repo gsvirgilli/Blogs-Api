@@ -19,8 +19,21 @@ const getByIdController = async (req, res) => {
   res.status(status).json(data);
 };
 
+const updateController = async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  const { title, content } = req.body;
+  if (!title || !content) {
+    return res.status(400).json({ message: 'Some required fields are missing' });
+  }
+  const userId = user.payload.payload.id;
+  const updatePost = await service.update(title, content, id, userId);
+  res.status(updatePost.status).json(updatePost.data);
+};
+
 module.exports = {
   createController,
   getAllController,
   getByIdController,
+  updateController,
 };
