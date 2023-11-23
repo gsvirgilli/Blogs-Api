@@ -10,5 +10,6 @@ router.post('/', valiPost.validationToken, validate.validationPost, newPost.crea
 router.get('/', valiPost.validationToken, newPost.getAllController);
 router.get('/:id', valiPost.validationToken, newPost.getByIdController);
 router.put('/:id', valiPost.validationToken, newPost.updateController);
+router.delete('/:id', valiPost.validationToken, newPost.deleteController);
 
 module.exports = router;

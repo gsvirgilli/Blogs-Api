@@ -31,9 +31,23 @@ const updateController = async (req, res) => {
   res.status(updatePost.status).json(updatePost.data);
 };
 
+const deleteController = async (req, res) => {
+  const { id } = req.params;
+  const { user } = req;
+  const userId = user.payload.payload.id;
+
+  const { status, data } = await service.deletePost(id, userId);
+
+  if (status === 404 || status === 401) {
+    return res.status(status).json(data);
+  }
+  res.status(status).end();
+};
+
 module.exports = {
   createController,
   getAllController,
   getByIdController,
   updateController,
+  deleteController,
 };

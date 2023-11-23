@@ -65,9 +65,25 @@ const update = async (title, content, id, userId) => {
   return { status: 200, data: response };
 };
 
+const deletePost = async (id, userId) => {
+  const getPost = await getById(id);
+
+  if (getPost.status === 404) {
+    return { status: 404, data: { message: 'Post does not exist' } };
+  }
+
+  if (getPost.data.userId !== userId) {
+    return { status: 401, data: { message: 'Unauthorized user' } };
+  }
+  await BlogPost.destroy({ where: { id } });
+
+  return { status: 204 };
+};
+
 module.exports = {
   post,
   getAll,
   getById,
   update,
+  deletePost,
 };
