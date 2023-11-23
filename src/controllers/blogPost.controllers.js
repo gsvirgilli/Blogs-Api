@@ -13,7 +13,14 @@ const getAllController = async (req, res) => {
   res.status(allPost.status).json(allPost.data);
 };
 
+const getByIdController = async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await service.getById(id);
+  res.status(status).json(data);
+};
+
 module.exports = {
   createController,
   getAllController,
+  getByIdController,
 };
