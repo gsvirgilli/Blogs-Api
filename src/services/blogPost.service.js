@@ -1,23 +1,29 @@
 const { BlogPost, PostCategory, User, Category } = require('../models');
-const serviceCategory = require('./category.service');
 
 const post = async (title, content, categoryIds, userId) => {
-  const noCategories = await serviceCategory.categoryGetById(categoryIds);
-  
-  const newPost = await BlogPost.create(
-    { title, content, userId, published: Date.now(), updated: Date.now() },
-  );
+  if (!title || !content || !categoryIds) {
+    return { status: 400, response: { message: 'Some required fields are missing' } };
+  }
 
-  const newPostId = categoryIds.map((categoryId) => ({
-    postId: newPost.id,
+  const existingCategories = await Category.findAll({ where: { id: categoryIds } });
+
+  if (existingCategories.length !== categoryIds.length) {
+    return { status: 400, response: { message: 'one or more "categoryIds" not found' } };
+  }
+
+  const createdBlogPost = await BlogPost.create({
+    title, content, userId, published: new Date(), updated: new Date(),
+  });
+
+  const postId = createdBlogPost.id;
+  const postCategoryAssociations = categoryIds.map((categoryId) => ({
+    postId,
     categoryId,
   }));
 
-  await PostCategory.bulkCreate(newPostId);
-  if (noCategories) {
-    return { status: 400, message: 'one or more "categoryIds" not found' };
-  }
-  return { status: 201, data: newPost };
+  await PostCategory.bulkCreate(postCategoryAssociations);
+
+  return { status: 201, response: createdBlogPost };
 };
 
 const getAll = async () => {

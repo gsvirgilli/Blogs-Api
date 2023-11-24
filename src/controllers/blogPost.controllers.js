@@ -1,11 +1,14 @@
 const service = require('../services/blogPost.service');
 
 const createController = async (req, res) => {
-  const { user } = req;
-  const { title, content, categoryIds } = req.body;
-  const userId = user.payload.payload.id;
-  const postNew = await service.post(title, content, categoryIds, userId);
-  res.status(postNew.status).json(postNew.data);
+  try {
+    const { title, content, categoryIds } = req.body;
+    const userId = req.user.payload.payload.id;
+    const result = await service.post(title, content, categoryIds, userId);
+    return res.status(result.status).json(result.response);
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 const getAllController = async (req, res) => {

@@ -12,16 +12,7 @@ const getAllCategories = async () => {
   return { status: 200, data: result };
 };
 
-const categoryGetById = async (categoryIds) => {
-  const findById = categoryIds.map(async (id) => Category.findByPk(id));
-  const result = await Promise.all(findById);
-
-  const nullCategories = result.some((id) => id === null);
-  return nullCategories;
-};
-
 module.exports = {
   createCategory,
   getAllCategories,
-  categoryGetById,
 };
